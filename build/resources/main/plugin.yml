@@ -1,11 +1,4 @@
-name: ApiOverview
+name: CaptureTheFlag
 version: '1.0-SNAPSHOT'
-main: de.otto.minecrafttutorium.MinecraftTutorium
+main: de.otto.capturetheflag.CaptureTheFlag
 api-version: 1.17
-commands:
-  heal:
-    description: Heals the Player by the amount given
-    usage: /heal
-  boom:
-    description: Makes an explosion
-    usage: /boom
