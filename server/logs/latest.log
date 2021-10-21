@@ -1,0 +1,92 @@
+[10:22:18] [main/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[10:22:19] [main/INFO]: Reloading ResourceManager: Default, bukkit
+[10:22:21] [Worker-Main-1/INFO]: Loaded 7 recipes
+[10:22:43] [main/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[10:22:43] [main/FATAL]: Failed to start the minecraft server
+java.io.IOException: Der Prozess kann nicht auf die Datei zugreifen, da ein anderer Prozess einen Teil der Datei gesperrt hat
+	at sun.nio.ch.FileDispatcherImpl.write0(Native Method) ~[?:?]
+	at sun.nio.ch.FileDispatcherImpl.write(FileDispatcherImpl.java:68) ~[?:?]
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132) ~[?:?]
+	at sun.nio.ch.IOUtil.write(IOUtil.java:76) ~[?:?]
+	at sun.nio.ch.IOUtil.write(IOUtil.java:67) ~[?:?]
+	at sun.nio.ch.FileChannelImpl.write(FileChannelImpl.java:285) ~[?:?]
+	at net.minecraft.util.DirectoryLock.create(DirectoryLock.java:40) ~[app:?]
+	at net.minecraft.world.level.storage.LevelStorageSource$LevelStorageAccess.<init>(LevelStorageSource.java:338) ~[app:?]
+	at net.minecraft.world.level.storage.LevelStorageSource.c(LevelStorageSource.java:308) ~[app:?]
+	at net.minecraft.server.Main.main(Main.java:151) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.Main.main(Main.java:293) ~[patched_1.17.1.jar:git-Paper-341]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.papermc.paperclip.Paperclip.main(Paperclip.java:49) ~[paper.jar:?]
+r(s): '[]' of 'ApiOverview' about their usage of System.out/err.print. Please use your plugin's logger instead (JavaPlugin#getLogger).
+[10:22:31] [Server thread/INFO]: Running delayed init tasks
+[10:22:31] [Server thread/INFO]: Done (4.756s)! For help, type "help"
+[10:22:31] [Server thread/INFO]: Timings Reset
+[10:22:41] [User Authenticator #1/INFO]: UUID of player OttoAzubi2 is 7718e4b0-4542-41b0-b25c-1ec89744b08e
+[10:22:42] [Server thread/INFO]: OttoAzubi2 joined the game
+[10:22:42] [Server thread/INFO]: OttoAzubi2[/127.0.0.1:64187] logged in with entity id 147 at ([world]-217.22340828149612, 63.0, -93.43567755114972)
+[10:23:05] [Server thread/INFO]: OttoAzubi2 issued server command: /gamemode1
+[10:23:16] [Server thread/INFO]: OttoAzubi2 issued server command: /gamemode 1
+[10:24:10] [Server thread/INFO]: OttoAzubi2 was blown up by Creeper
+[10:31:40] [Server thread/INFO]: OttoAzubi2 issued server command: /heal
+[10:31:56] [Server thread/INFO]: OttoAzubi2 issued server command: /heal5
+[10:32:03] [Server thread/INFO]: OttoAzubi2 issued server command: /heal 4
+[10:36:09] [Server thread/INFO]: Stopping the server
+[10:36:09] [Server thread/INFO]: Stopping server
+[10:36:09] [Server thread/INFO]: [ApiOverview] Disabling ApiOverview v1.0-SNAPSHOT
+[10:36:09] [Server thread/INFO]: [ApiOverview] [STDOUT] Bye!
+[10:36:09] [Server thread/WARN]: Nag author(s): '[]' of 'ApiOverview' about their usage of System.out/err.print. Please use your plugin's logger instead (JavaPlugin#getLogger).
+[10:36:09] [Server thread/INFO]: Saving players
+[10:36:09] [Server thread/INFO]: OttoAzubi2 lost connection: Server closed
+[10:36:09] [Server thread/INFO]: OttoAzubi2 left the game
+[10:36:09] [Server thread/INFO]: Saving worlds
+[10:36:09] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[10:36:09] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[10:36:10] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[10:36:10] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[10:36:10] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[10:36:10] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[10:36:10] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[10:36:10] [Server thread/INFO]: Flushing Chunk IO
+[10:36:10] [Server thread/INFO]: Closing Thread Pool
+[10:36:10] [Server thread/INFO]: Closing Server
+[10:36:17] [Server console handler/ERROR]: Caught previously unhandled exception :
+java.io.IOError: java.io.IOException: Error executing 'stty.exe -a':       1 [main] stty 1528 C:\Program Files\Git\usr\bin\stty.exe: *** fatal error - couldn't initialize fd 0 for /dev/pty1
+Stack trace:
+Frame        Function    Args
+000FFFFB560  00180064365 (00180275F10, 00180266FD1, 000FFFFCA80, 000FFFFBA40)
+000FFFFBA90  001800499D2 (00100002000, 0018034EE60, 00000000000, 00000000454)
+000FFFFCAA0  00180049A11 (00000000000, 0018034F170, 000FFFFCA80, 000FFFFCB80)
+000FFFFCB30  0018005CFCD (00000000000, 000FFFFCC60, 001800DC3EF, 000FFFFCBFC)
+000FFFFCC10  0018005D115 (0018004A47A, 00000000000, FFFFFFFFFFFFFFF3, 00000000000)
+000FFFFCCE0  0018004A1A8 (00000000000, 00000000000, 00000000000, 00000000000)
+000FFFFCDA0  00180048A2A (00000000000, 00000000000, 00000000000, 00000000000)
+000FFFFCE50  00180048AEC (00000000000, 00000000000, 00000000000, 00000000000)
+End of stack trace
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.AbstractPosixTerminal.setAttributes(AbstractPosixTerminal.java:54) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.reader.impl.LineReaderImpl.readLine(LineReaderImpl.java:650) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.reader.impl.LineReaderImpl.readLine(LineReaderImpl.java:418) ~[patched_1.17.1.jar:git-Paper-341]
+	at net.minecrell.terminalconsole.SimpleTerminalConsole.readCommands(SimpleTerminalConsole.java:158) ~[patched_1.17.1.jar:git-Paper-341]
+	at net.minecrell.terminalconsole.SimpleTerminalConsole.start(SimpleTerminalConsole.java:141) ~[patched_1.17.1.jar:git-Paper-341]
+	at net.minecraft.server.dedicated.DedicatedServer$1.run(DedicatedServer.java:113) ~[patched_1.17.1.jar:git-Paper-341]
+Caused by: java.io.IOException: Error executing 'stty.exe -a':       1 [main] stty 1528 C:\Program Files\Git\usr\bin\stty.exe: *** fatal error - couldn't initialize fd 0 for /dev/pty1
+Stack trace:
+Frame        Function    Args
+000FFFFB560  00180064365 (00180275F10, 00180266FD1, 000FFFFCA80, 000FFFFBA40)
+000FFFFBA90  001800499D2 (00100002000, 0018034EE60, 00000000000, 00000000454)
+000FFFFCAA0  00180049A11 (00000000000, 0018034F170, 000FFFFCA80, 000FFFFCB80)
+000FFFFCB30  0018005CFCD (00000000000, 000FFFFCC60, 001800DC3EF, 000FFFFCBFC)
+000FFFFCC10  0018005D115 (0018004A47A, 00000000000, FFFFFFFFFFFFFFF3, 00000000000)
+000FFFFCCE0  0018004A1A8 (00000000000, 00000000000, 00000000000, 00000000000)
+000FFFFCDA0  00180048A2A (00000000000, 00000000000, 00000000000, 00000000000)
+000FFFFCE50  00180048AEC (00000000000, 00000000000, 00000000000, 00000000000)
+End of stack trace
+	at org.bukkit.craftbukkit.libs.jline.utils.ExecHelper.exec(ExecHelper.java:42) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.ExecPty.doGetConfig(ExecPty.java:175) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.ExecPty.getAttr(ExecPty.java:87) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.ExecPty.doSetAttr(ExecPty.java:93) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.AbstractPty.setAttr(AbstractPty.java:29) ~[patched_1.17.1.jar:git-Paper-341]
+	at org.bukkit.craftbukkit.libs.jline.terminal.impl.AbstractPosixTerminal.setAttributes(AbstractPosixTerminal.java:52) ~[patched_1.17.1.jar:git-Paper-341]
+	... 5 more
