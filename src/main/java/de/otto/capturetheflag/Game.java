@@ -1,18 +1,31 @@
 package de.otto.capturetheflag;
 
+import de.otto.capturetheflag.team.Team;
+
 public class Game {
-    public boolean active = false;
 
-    public boolean isActive() {
-        return active;
-    }
+  private CaptureTheFlag plugin;
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+  public Game(CaptureTheFlag plugin) {
+    this.plugin = plugin;
+  }
 
-    public void start() {
-        setActive(true);
+  private boolean active = false;
 
-    }
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public void start() {
+    setActive(true);
+    getPlugin().getTeamFactory().getTeams().forEach(Team::teleportAllPlayersToTeamSpawn);
+  }
+
+  public CaptureTheFlag getPlugin() {
+    return plugin;
+  }
 }

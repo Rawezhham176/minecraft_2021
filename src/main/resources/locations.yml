@@ -1,34 +1,45 @@
 Locations:
+  LobbySpawn:
+    X: -301.5
+    Y: 64
+    Z: 20.5
+    World: world
+    Yaw: 0
+    Pitch: 0
   Teams:
     Blue:
       Selection:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -304
+        Y: 63
+        Z: 24
         World: world
       Spawn:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -291.5
+        Y: 64
+        Z: 28.5
         World: world
+        Yaw: -180
+        Pitch: 0
       Flag:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -292
+        Y: 63
+        Z: 13
         World: world
     Red:
       Selection:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -300
+        Y: 63
+        Z: 24
         World: world
       Spawn:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -291.5
+        Y: 64
+        Z: 8.5
         World: world
+        Yaw: 0
+        Pitch: 0
       Flag:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -292
+        Y: 63
+        Z: 23
         World: world

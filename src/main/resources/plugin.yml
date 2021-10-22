@@ -2,3 +2,6 @@ name: CaptureTheFlag
 version: '${version}'
 main: de.otto.capturetheflag.CaptureTheFlag
 api-version: 1.17
+commands:
+  start:
+    description: Starts the game

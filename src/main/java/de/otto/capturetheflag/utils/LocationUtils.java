@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 public class LocationUtils {
 
-    public static Location LOBBY_SPAWN;
-    public static Location TEAM_BLUE_SELECTION;
+  public static Location LOBBY_SPAWN;
+  public static Location TEAM_BLUE_SELECTION;
   public static Location TEAM_RED_SELECTION;
   public static Location TEAM_BLUE_SPAWN;
   public static Location TEAM_RED_SPAWN;
@@ -20,23 +20,33 @@ public class LocationUtils {
   static {
     TEAM_BLUE_SELECTION = getLocation("Teams.Blue.Selection");
     TEAM_RED_SELECTION = getLocation("Teams.Red.Selection");
-    TEAM_BLUE_SPAWN = getLocation("Teams.Blue.Spawn");
-    TEAM_RED_SPAWN = getLocation("Teams.Red.Spawn");
+    TEAM_BLUE_SPAWN = getLocationWithLooking("Teams.Blue.Spawn");
+    TEAM_RED_SPAWN = getLocationWithLooking("Teams.Red.Spawn");
     TEAM_BLUE_FLAG = getLocation("Teams.Blue.Flag");
     TEAM_RED_FLAG = getLocation("Teams.Red.Flag");
-    LOBBY_SPAWN = getLocation("LobbySpawn");
+    LOBBY_SPAWN = getLocationWithLooking("LobbySpawn");
   }
 
   private static Location getLocation(String locationName) {
     String path = getLocationPath(locationName);
-    int x = CaptureTheFlag.getInstance().getLocations().getInt(path + ".X");
-    int y = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Y");
-    int z = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Z");
+    double x = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".X");
+    double y = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".Y");
+    double z = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".Z");
     String worldName = CaptureTheFlag.getInstance().getLocations()
         .getString(path + ".World");
     assert worldName != null;
     World world = Bukkit.getWorld(worldName);
     return new Location(world, x, y, z);
+  }
+
+  private static Location getLocationWithLooking(String locationName) {
+    Location location = getLocation(locationName);
+    String path = getLocationPath(locationName);
+    float yaw = CaptureTheFlag.getInstance().getLocations().getLong(path + ".Yaw");
+    float pitch = CaptureTheFlag.getInstance().getLocations().getLong(path + ".Pitch");
+    location.setYaw(yaw);
+    location.setPitch(pitch);
+    return location;
   }
 
   private static String getLocationPath(String path) {

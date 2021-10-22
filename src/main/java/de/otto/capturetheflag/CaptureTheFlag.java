@@ -8,15 +8,19 @@ import de.otto.capturetheflag.listener.TeamSelectionListener;
 import de.otto.capturetheflag.team.TeamFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
 import de.otto.capturetheflag.utils.TeamColor;
+import java.util.Objects;
 
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
-  private YamlFile locations;
-
   private static CaptureTheFlag instance;
+  private YamlFile locations;
   private TeamFactory teamFactory;
 
   private Game game;
+
+  public static CaptureTheFlag getInstance() {
+    return instance;
+  }
 
   @Override
   public void onEnable() {
@@ -30,21 +34,19 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     getServer().getPluginManager().registerEvents(new TeamSelectionListener(this), this);
     getServer().getPluginManager().registerEvents(new LobbyListener(this), this);
 
-    getCommand("start").setExecutor(new StartCommand(this));
+    Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
   }
 
   private void registerTeams() {
-    getTeamFactory().addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION, LocationUtils.TEAM_BLUE_SPAWN);
-    getTeamFactory().addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION, LocationUtils.TEAM_RED_SPAWN);
+    getTeamFactory()
+        .addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION, LocationUtils.TEAM_BLUE_SPAWN);
+    getTeamFactory()
+        .addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION, LocationUtils.TEAM_RED_SPAWN);
   }
 
   @Override
   public void setupFiles() throws FileException {
     locations = (YamlFile) loadFile(new YamlFile("locations.yml"));
-  }
-
-  public static CaptureTheFlag getInstance() {
-    return instance;
   }
 
   public YamlFile getLocations() {
@@ -55,11 +57,11 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     return teamFactory;
   }
 
-  public void setGame(Game game) {
-    this.game = game;
-  }
-
   public Game getGame() {
     return game;
+  }
+
+  public void setGame(Game game) {
+    this.game = game;
   }
 }
