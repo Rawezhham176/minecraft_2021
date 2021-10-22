@@ -1,11 +1,34 @@
-TeamSelection:
-  Blue:
-    X: 0
-    Y: 0
-    Z: 0
-    World: world
+Locations:
+  Teams:
+    Blue:
+    Selection:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world
+    Spawn:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world
+    Flag:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world
   Red:
-    X: 0
-    Y: 0
-    Z: 0
-    World: world
+    Selection:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world
+    Spawn:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world
+    Flag:
+      X: 0
+      Y: 0
+      Z: 0
+      World: world

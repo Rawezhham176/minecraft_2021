@@ -1,5 +1,6 @@
-package de.otto.capturetheflag;
+package de.otto.capturetheflag.utils;
 
+import de.otto.capturetheflag.CaptureTheFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -8,23 +9,36 @@ import org.bukkit.entity.Player;
 
 public class LocationUtils {
 
-  public static Location TEAM_SELECTION_BLUE;
-  public static Location TEAM_SELECTION_RED;
+  public static Location TEAM_BLUE_SELECTION;
+  public static Location TEAM_RED_SELECTION;
+  public static Location TEAM_BLUE_SPAWN;
+  public static Location TEAM_RED_SPAWN;
+  public static Location TEAM_BLUE_FLAG;
+  public static Location TEAM_RED_FLAG;
 
   static {
-    TEAM_SELECTION_BLUE = getLocation("TeamSelection.Blue");
-    TEAM_SELECTION_RED = getLocation("TeamSelection.Red");
+    TEAM_BLUE_SELECTION = getLocation("Teams.Blue.Selection");
+    TEAM_RED_SELECTION = getLocation("Teams.Red.Selection");
+    TEAM_BLUE_SPAWN = getLocation("Teams.Blue.Spawn");
+    TEAM_RED_SPAWN = getLocation("Teams.Red.Spawn");
+    TEAM_BLUE_FLAG = getLocation("Teams.Blue.Flag");
+    TEAM_RED_FLAG = getLocation("Teams.Red.Flag");
   }
 
   private static Location getLocation(String locationName) {
-    int x = CaptureTheFlag.getInstance().getLocations().getInt(locationName + ".X");
-    int y = CaptureTheFlag.getInstance().getLocations().getInt(locationName + ".Y");
-    int z = CaptureTheFlag.getInstance().getLocations().getInt(locationName + ".Z");
+    String path = getLocationPath(locationName);
+    int x = CaptureTheFlag.getInstance().getLocations().getInt(path + ".X");
+    int y = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Y");
+    int z = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Z");
     String worldName = CaptureTheFlag.getInstance().getLocations()
-        .getString(locationName + ".World");
+        .getString(path + ".World");
     assert worldName != null;
     World world = Bukkit.getWorld(worldName);
     return new Location(world, x, y, z);
+  }
+
+  private static String getLocationPath(String path) {
+    return "Locations." + path;
   }
 
   public static boolean isPlayerInLocationRange(Player player, Location center, int range) {
