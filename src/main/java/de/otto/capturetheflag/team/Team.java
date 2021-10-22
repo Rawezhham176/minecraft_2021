@@ -12,12 +12,14 @@ public class Team {
   private final Location teamSelection;
   private final Location teamSpawn;
   private final List<Player> players;
+  private int score;
 
   public Team(TeamColor color, Location teamSelection, Location teamSpawn) {
     this.color = color;
     this.teamSelection = teamSelection;
     this.teamSpawn = teamSpawn;
     this.players = new ArrayList<>();
+    this.score = score;
   }
 
   public void teleportAllPlayersToTeamSpawn() {
@@ -56,4 +58,15 @@ public class Team {
     return teamSpawn;
   }
 
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public void addScore() {
+    this.score += 1;
+  }
 }

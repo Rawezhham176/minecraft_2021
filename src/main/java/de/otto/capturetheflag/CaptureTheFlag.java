@@ -3,6 +3,7 @@ package de.otto.capturetheflag;
 import de.otto.capturetheflag.basicconstructplugin.BasicConstructPlugin;
 import de.otto.capturetheflag.basicconstructplugin.exceptions.FileException;
 import de.otto.capturetheflag.basicconstructplugin.files.YamlFile;
+import de.otto.capturetheflag.listener.LobbyListener;
 import de.otto.capturetheflag.listener.TeamSelectionListener;
 import de.otto.capturetheflag.team.TeamFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
@@ -26,6 +27,9 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     registerTeams();
 
     getServer().getPluginManager().registerEvents(new TeamSelectionListener(this), this);
+    getServer().getPluginManager().registerEvents(new LobbyListener(this), this);
+
+    getCommand("start").setExecutor(new StartCommand());
   }
 
   private void registerTeams() {
