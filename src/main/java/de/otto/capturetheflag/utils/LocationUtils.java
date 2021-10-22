@@ -9,7 +9,8 @@ import org.bukkit.entity.Player;
 
 public class LocationUtils {
 
-  public static Location TEAM_BLUE_SELECTION;
+    public static Location LOBBY_SPAWN;
+    public static Location TEAM_BLUE_SELECTION;
   public static Location TEAM_RED_SELECTION;
   public static Location TEAM_BLUE_SPAWN;
   public static Location TEAM_RED_SPAWN;
@@ -23,6 +24,7 @@ public class LocationUtils {
     TEAM_RED_SPAWN = getLocation("Teams.Red.Spawn");
     TEAM_BLUE_FLAG = getLocation("Teams.Blue.Flag");
     TEAM_RED_FLAG = getLocation("Teams.Red.Flag");
+    LOBBY_SPAWN = getLocation("LobbySpawn");
   }
 
   private static Location getLocation(String locationName) {

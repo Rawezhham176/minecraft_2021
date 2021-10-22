@@ -16,6 +16,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   private static CaptureTheFlag instance;
   private TeamFactory teamFactory;
 
+  private Game game;
 
   @Override
   public void onEnable() {
@@ -29,7 +30,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     getServer().getPluginManager().registerEvents(new TeamSelectionListener(this), this);
     getServer().getPluginManager().registerEvents(new LobbyListener(this), this);
 
-    getCommand("start").setExecutor(new StartCommand());
+    getCommand("start").setExecutor(new StartCommand(this));
   }
 
   private void registerTeams() {
@@ -52,5 +53,13 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
   public TeamFactory getTeamFactory() {
     return teamFactory;
+  }
+
+  public void setGame(Game game) {
+    this.game = game;
+  }
+
+  public Game getGame() {
+    return game;
   }
 }
