@@ -3,9 +3,9 @@ package de.otto.capturetheflag;
 import de.otto.capturetheflag.basicconstructplugin.BasicConstructPlugin;
 import de.otto.capturetheflag.basicconstructplugin.exceptions.FileException;
 import de.otto.capturetheflag.basicconstructplugin.files.YamlFile;
-import de.otto.capturetheflag.listener.LobbyListener;
 import de.otto.capturetheflag.listener.TeamSelectionListener;
 import de.otto.capturetheflag.team.TeamFactory;
+import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.Objects;
@@ -15,6 +15,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   private static CaptureTheFlag instance;
   private YamlFile locations;
   private TeamFactory teamFactory;
+  private PhaseFactory phaseFactory;
 
   private Game game;
 
@@ -27,15 +28,19 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     super.onEnable();
     instance = this;
 
-    teamFactory = new TeamFactory();
+    setTeamFactory(new TeamFactory());
+    setPhaseFactory(new PhaseFactory(this));
 
     registerTeams();
 
     getServer().getPluginManager().registerEvents(new TeamSelectionListener(this), this);
-    getServer().getPluginManager().registerEvents(new LobbyListener(this), this);
+
+    getPhaseFactory().setPhase(getPhaseFactory().getPhaseByName(PhaseName.LOBBY), true);
 
     Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
   }
+
+
 
   private void registerTeams() {
     getTeamFactory()
@@ -51,6 +56,18 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
   public YamlFile getLocations() {
     return locations;
+  }
+
+  public void setTeamFactory(TeamFactory teamFactory) {
+    this.teamFactory = teamFactory;
+  }
+
+  public void setPhaseFactory(PhaseFactory phaseFactory) {
+    this.phaseFactory = phaseFactory;
+  }
+
+  public PhaseFactory getPhaseFactory() {
+    return phaseFactory;
   }
 
   public TeamFactory getTeamFactory() {

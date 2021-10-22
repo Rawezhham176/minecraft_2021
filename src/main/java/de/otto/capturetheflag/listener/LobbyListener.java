@@ -14,12 +14,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-public class LobbyListener implements Listener {
-
-  private final CaptureTheFlag plugin;
+public class LobbyListener extends AbstractGameListener {
 
   public LobbyListener(CaptureTheFlag plugin) {
-    this.plugin = plugin;
+    super(plugin);
   }
 
   @EventHandler
@@ -46,10 +44,5 @@ public class LobbyListener implements Listener {
           MiniMessage.get().parse("<rainbow>Das Spiel läuft bereits</rainbow>"));
     }
   }
-
-  public CaptureTheFlag getPlugin() {
-    return plugin;
-  }
-
 
 }
