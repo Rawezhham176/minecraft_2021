@@ -1,7 +1,0 @@
-name: CaptureTheFlag
-version: '1.0-SNAPSHOT'
-main: de.otto.capturetheflag.CaptureTheFlag
-api-version: 1.17
-commands:
-  start:
-    description: Starts the game
