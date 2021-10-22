@@ -18,10 +18,11 @@ public class TeamSelectionListener implements Listener {
   @EventHandler
   public void onMove(PlayerMoveEvent e) {
     Player player = e.getPlayer();
-    Location location = e.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
-    if (location.equals(LocationUtils.TEAMSELECTION_BLUE)) {
+    Location teamSelectionBlue = LocationUtils.TEAM_SELECTION_BLUE;
+    Location teamSelectionRed = LocationUtils.TEAM_SELECTION_RED;
+    if (LocationUtils.isPlayerInLocationRange(player, teamSelectionBlue, 3)) {
       player.sendMessage("§bDu bist jetzt im Team §1BLAU");
-    } else if (location.equals(LocationUtils.TEAMSELECTION_RED)) {
+    } else if (LocationUtils.isPlayerInLocationRange(player, teamSelectionRed, 3)) {
       player.sendMessage("§bDu bist jetzt im Team §4ROT");
     }
   }
