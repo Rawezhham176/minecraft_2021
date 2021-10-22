@@ -27,7 +27,6 @@ public class LocationUtils {
 
   private static Location getLocation(String locationName) {
     String path = getLocationPath(locationName);
-    System.out.println("Pfad --> " + path + ".World");
     int x = CaptureTheFlag.getInstance().getLocations().getInt(path + ".X");
     int y = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Y");
     int z = CaptureTheFlag.getInstance().getLocations().getInt(path + ".Z");
