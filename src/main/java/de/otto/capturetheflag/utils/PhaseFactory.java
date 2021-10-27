@@ -26,12 +26,19 @@ public class PhaseFactory {
     getPhases().add(new Phase(getPlugin(), phaseName, phaseListenerClasses));
   }
 
-  public void setPhase(Phase phase, boolean start) {
-    phase.getPhaseListener().forEach(phaseListener -> phaseListener.registerListener(start));
+  public void setPhase(PhaseName phaseName, boolean start) {
+    getByName(phaseName).getPhaseListener()
+        .forEach(phaseListener -> phaseListener.registerListener(start));
   }
 
   public Phase getPhaseByName(PhaseName phaseName) {
-    return getPhases().stream().filter(phase -> phase.getPhaseName() == phaseName).findFirst().orElseThrow();
+    return getPhases().stream().filter(phase -> phase.getPhaseName() == phaseName).findFirst()
+        .orElseThrow();
+  }
+
+  public Phase getByName(PhaseName phaseName) {
+    return phases.stream().filter(phase -> phase.getPhaseName() == phaseName).findFirst()
+        .orElseThrow();
   }
 
   public List<Phase> getPhases() {

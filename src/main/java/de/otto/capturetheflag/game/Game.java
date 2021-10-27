@@ -5,7 +5,7 @@ import de.otto.capturetheflag.team.Team;
 
 public class Game {
 
-  private CaptureTheFlag plugin;
+  private final CaptureTheFlag plugin;
 
   public Game(CaptureTheFlag plugin) {
     this.plugin = plugin;
@@ -23,7 +23,16 @@ public class Game {
 
   public void start() {
     setActive(true);
+    getPlugin().getPhaseFactory().setPhase(PhaseName.LOBBY, false);
+    getPlugin().getPhaseFactory().setPhase(PhaseName.INGAME, true);
     getPlugin().getTeamFactory().getTeams().forEach(Team::teleportAllPlayersToTeamSpawn);
+  }
+
+  public void checkScore(Team team) {
+    //noinspection StatementWithEmptyBody
+    if (team.getScore() == 3) {
+
+    }
   }
 
   public CaptureTheFlag getPlugin() {

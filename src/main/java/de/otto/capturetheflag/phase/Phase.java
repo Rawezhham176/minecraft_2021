@@ -14,7 +14,8 @@ public class Phase {
   private final PhaseName phaseName;
   private final List<AbstractGameListener> phaseListener;
 
-  public Phase(CaptureTheFlag plugin, PhaseName phaseName, Class<? extends AbstractGameListener>[] phaseListenerClasses) {
+  public Phase(CaptureTheFlag plugin, PhaseName phaseName,
+      Class<? extends AbstractGameListener>[] phaseListenerClasses) {
     this.plugin = plugin;
     this.phaseName = phaseName;
     this.phaseListener = new ArrayList<>();
@@ -28,7 +29,10 @@ public class Phase {
         AbstractGameListener listener = phaseListener.getDeclaredConstructor(CaptureTheFlag.class)
             .newInstance(getPlugin());
         getPhaseListener().add(listener);
-      } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      } catch (InstantiationException
+          | IllegalAccessException
+          | InvocationTargetException
+          | NoSuchMethodException e) {
         e.printStackTrace();
       }
     });

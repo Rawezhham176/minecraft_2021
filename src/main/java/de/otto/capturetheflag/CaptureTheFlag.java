@@ -3,7 +3,6 @@ package de.otto.capturetheflag;
 import de.otto.capturetheflag.commands.StartCommand;
 import de.otto.capturetheflag.game.Game;
 import de.otto.capturetheflag.game.PhaseName;
-import de.otto.capturetheflag.listener.TeamSelectionListener;
 import de.otto.capturetheflag.team.TeamFactory;
 import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
@@ -12,6 +11,20 @@ import java.util.Objects;
 import me.eyetealer.basicconstructplugin.BasicConstructPlugin;
 import me.eyetealer.basicconstructplugin.exceptions.FileException;
 import me.eyetealer.basicconstructplugin.files.YamlFile;
+
+/*
+
+TODO:
+  Starterkit in Utilsklasse zusammenstellen.
+  Beim Tod Items nicht droppen, Flagge muss droppen.
+  Beim Respawn zum Teamspawn teleportieren.
+  Im Bereich der Flagge soll Timer gestartet werden:
+    Wenn Spieler lang genug im Bereich ist, erhält er die Flagge auf dem Kopf.
+  Wenn Spieler Flagge auf eigenen Flaggenbereich bringt, soll das Team einen Punkt erhalten und es
+  soll überprüft werden, ob das Team jetzt 3 Punkte zum Sieg besitzt.
+  Siegmechanik muss eingebaut werden.
+
+ */
 
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
@@ -29,14 +42,12 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   public void onStart() {
     instance = this;
 
-    setTeamFactory(new TeamFactory());
+    setTeamFactory(new TeamFactory(this));
     setPhaseFactory(new PhaseFactory(this));
 
     registerTeams();
 
-    getServer().getPluginManager().registerEvents(new TeamSelectionListener(this), this);
-
-    getPhaseFactory().setPhase(getPhaseFactory().getPhaseByName(PhaseName.LOBBY), true);
+    getPhaseFactory().setPhase(PhaseName.LOBBY, true);
 
     Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
   }
