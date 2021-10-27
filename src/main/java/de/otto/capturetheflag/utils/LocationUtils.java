@@ -29,10 +29,10 @@ public class LocationUtils {
 
   private static Location getLocation(String locationName) {
     String path = getLocationPath(locationName);
-    double x = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".X");
-    double y = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".Y");
-    double z = CaptureTheFlag.getInstance().getLocations().getDouble(path + ".Z");
-    String worldName = CaptureTheFlag.getInstance().getLocations()
+    double x = CaptureTheFlag.getInstance().getLocations().getConfig().getDouble(path + ".X");
+    double y = CaptureTheFlag.getInstance().getLocations().getConfig().getDouble(path + ".Y");
+    double z = CaptureTheFlag.getInstance().getLocations().getConfig().getDouble(path + ".Z");
+    String worldName = CaptureTheFlag.getInstance().getLocations().getConfig()
         .getString(path + ".World");
     assert worldName != null;
     World world = Bukkit.getWorld(worldName);
@@ -42,8 +42,8 @@ public class LocationUtils {
   private static Location getLocationWithLooking(String locationName) {
     Location location = getLocation(locationName);
     String path = getLocationPath(locationName);
-    float yaw = CaptureTheFlag.getInstance().getLocations().getLong(path + ".Yaw");
-    float pitch = CaptureTheFlag.getInstance().getLocations().getLong(path + ".Pitch");
+    float yaw = CaptureTheFlag.getInstance().getLocations().getConfig().getLong(path + ".Yaw");
+    float pitch = CaptureTheFlag.getInstance().getLocations().getConfig().getLong(path + ".Pitch");
     location.setYaw(yaw);
     location.setPitch(pitch);
     return location;

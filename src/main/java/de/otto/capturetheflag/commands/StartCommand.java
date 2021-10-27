@@ -1,5 +1,7 @@
-package de.otto.capturetheflag;
+package de.otto.capturetheflag.commands;
 
+import de.otto.capturetheflag.CaptureTheFlag;
+import de.otto.capturetheflag.game.Game;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 public class StartCommand implements CommandExecutor {
 
   private final CaptureTheFlag plugin;
-
 
   public StartCommand(CaptureTheFlag plugin) {
     this.plugin = plugin;

@@ -1,4 +1,4 @@
-package de.otto.capturetheflag;
+package de.otto.capturetheflag.game;
 
 public enum PhaseName {
 

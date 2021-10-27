@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'de.otto'
-version = '1.0-SNAPSHOT'
+version = '1.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -21,6 +21,7 @@ repositories {
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     implementation "net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT"
+    implementation files('libs/BasicConstructPlugin.jar')
 }
 
 def targetJavaVersion = 16

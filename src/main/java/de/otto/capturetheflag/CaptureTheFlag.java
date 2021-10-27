@@ -1,14 +1,17 @@
 package de.otto.capturetheflag;
 
-import de.otto.capturetheflag.basicconstructplugin.BasicConstructPlugin;
-import de.otto.capturetheflag.basicconstructplugin.exceptions.FileException;
-import de.otto.capturetheflag.basicconstructplugin.files.YamlFile;
+import de.otto.capturetheflag.commands.StartCommand;
+import de.otto.capturetheflag.game.Game;
+import de.otto.capturetheflag.game.PhaseName;
 import de.otto.capturetheflag.listener.TeamSelectionListener;
 import de.otto.capturetheflag.team.TeamFactory;
 import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.Objects;
+import me.eyetealer.basicconstructplugin.BasicConstructPlugin;
+import me.eyetealer.basicconstructplugin.exceptions.FileException;
+import me.eyetealer.basicconstructplugin.files.YamlFile;
 
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
@@ -23,9 +26,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     return instance;
   }
 
-  @Override
-  public void onEnable() {
-    super.onEnable();
+  public void onStart() {
     instance = this;
 
     setTeamFactory(new TeamFactory());
@@ -51,7 +52,9 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
   @Override
   public void setupFiles() throws FileException {
-    locations = (YamlFile) loadFile(new YamlFile("locations.yml"));
+    locations = getConfigFile(YamlFile.class, "locations.yml");
+    locations.createConfig();
+    locations.save();
   }
 
   public YamlFile getLocations() {

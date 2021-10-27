@@ -1,5 +1,6 @@
-package de.otto.capturetheflag;
+package de.otto.capturetheflag.game;
 
+import de.otto.capturetheflag.CaptureTheFlag;
 import de.otto.capturetheflag.team.Team;
 
 public class Game {

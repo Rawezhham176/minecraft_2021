@@ -1,7 +1,7 @@
 package de.otto.capturetheflag.utils;
 
 import de.otto.capturetheflag.CaptureTheFlag;
-import de.otto.capturetheflag.PhaseName;
+import de.otto.capturetheflag.game.PhaseName;
 import de.otto.capturetheflag.listener.AbstractGameListener;
 import de.otto.capturetheflag.listener.InGameListener;
 import de.otto.capturetheflag.listener.LobbyListener;

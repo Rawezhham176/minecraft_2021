@@ -19,7 +19,6 @@ public class Team {
     this.teamSelection = teamSelection;
     this.teamSpawn = teamSpawn;
     this.players = new ArrayList<>();
-    this.score = score;
   }
 
   public void teleportAllPlayersToTeamSpawn() {
