@@ -5,6 +5,7 @@ import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class TeamFactory {
 
@@ -25,5 +26,9 @@ public class TeamFactory {
 
   public List<Team> getTeams() {
     return teams;
+  }
+
+  public Team getTeamByPlayer(Player player) {
+    return getTeams().stream().filter(team -> team.containsPlayer(player)).findFirst().orElseThrow();
   }
 }
