@@ -2,11 +2,11 @@ package de.otto.capturetheflag.listener;
 
 import de.otto.capturetheflag.CaptureTheFlag;
 import de.otto.capturetheflag.utils.LocationUtils;
+import de.otto.capturetheflag.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -30,7 +30,9 @@ public class LobbyListener extends AbstractGameListener {
 
   @EventHandler
   public void onJoinListener(PlayerJoinEvent e) {
-    e.getPlayer().teleport(LocationUtils.LOBBY_SPAWN);
+    Player player = e.getPlayer();
+    player.teleport(LocationUtils.LOBBY_SPAWN);
+    Utils.resetPlayer(player);
   }
 
   @EventHandler
@@ -48,11 +50,6 @@ public class LobbyListener extends AbstractGameListener {
         }
       }
     });
-  }
-
-  @EventHandler
-  public void onExp(PlayerExpChangeEvent e) {
-    e.setAmount(0);
   }
 
 }

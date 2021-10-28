@@ -2,9 +2,8 @@ package de.otto.capturetheflag.listener;
 
 import de.otto.capturetheflag.CaptureTheFlag;
 import de.otto.capturetheflag.team.Team;
-import de.otto.capturetheflag.utils.Starterkit;
+import de.otto.capturetheflag.utils.Utils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,7 +31,7 @@ public class InGameListener extends AbstractGameListener {
   @EventHandler
   public void onRespawn(PlayerRespawnEvent e) {
     Player player = e.getPlayer();
-    Starterkit.setItems(player);
+    Utils.setItems(player);
     Team team = getPlugin().getTeamFactory().getTeamByPlayer(player);
     e.setRespawnLocation(team.getTeamSpawn());
   }
@@ -43,7 +42,6 @@ public class InGameListener extends AbstractGameListener {
     e.getDrops().clear();
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       ItemStack helmet = e.getEntity().getInventory().getHelmet();
-
       if (helmet != null && helmet.equals(team.getTeamBlockStack())) {
         e.getDrops().add(team.getTeamBlockStack());
       }

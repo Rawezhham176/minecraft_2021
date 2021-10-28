@@ -1,7 +1,7 @@
 package de.otto.capturetheflag.team;
 
 import de.otto.capturetheflag.CaptureTheFlag;
-import de.otto.capturetheflag.utils.Starterkit;
+import de.otto.capturetheflag.utils.Utils;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,13 +116,8 @@ public class Team {
 
   public void equipAllPlayers() {
     players.forEach(player -> {
-      player.getInventory().clear();
-      player.setGameMode(GameMode.SURVIVAL);
-      player.setExp(0);
-      player.setLevel(0);
-      player.setHealth(20);
-      player.setFoodLevel(20);
-      Starterkit.setItems(player);
+      Utils.resetPlayer(player);
+      Utils.setItems(player);
     });
   }
 

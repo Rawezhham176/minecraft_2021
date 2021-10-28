@@ -16,7 +16,6 @@ import org.bukkit.Material;
 /*
 
 TODO:
-  Beim Tod Flagge droppen.
   Im Bereich der Flagge soll Timer gestartet werden:
     Wenn Spieler lang genug im Bereich ist, erhält er die Flagge auf dem Kopf.
   Wenn Spieler Flagge auf eigenen Flaggenbereich bringt, soll das Team einen Punkt erhalten und es
@@ -28,9 +27,12 @@ TODO:
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
   private static CaptureTheFlag instance;
-  private YamlFile locations;
+  private YamlFile locationsFile;
+  private YamlFile configFile;
   private TeamFactory teamFactory;
   private PhaseFactory phaseFactory;
+
+  private boolean debugMode;
 
   private Game game;
 
@@ -41,51 +43,45 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   public void onStart() {
     instance = this;
 
-    setTeamFactory(new TeamFactory(this));
-    setPhaseFactory(new PhaseFactory(this));
+    teamFactory = new TeamFactory(this);
+    phaseFactory = new PhaseFactory(this);
 
     registerTeams();
 
-    getPhaseFactory().setPhase(PhaseName.LOBBY, true);
+    phaseFactory.setPhase(PhaseName.LOBBY, true);
 
     Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
   }
 
 
   private void registerTeams() {
-    getTeamFactory()
-        .addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION, LocationUtils.TEAM_BLUE_SPAWN,
-            LocationUtils.TEAM_BLUE_FLAG, Material.BLUE_CONCRETE);
-    getTeamFactory()
-        .addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION, LocationUtils.TEAM_RED_SPAWN,
-            LocationUtils.TEAM_RED_FLAG, Material.RED_CONCRETE);
+    teamFactory.addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION,
+        LocationUtils.TEAM_BLUE_SPAWN, LocationUtils.TEAM_BLUE_FLAG, Material.BLUE_CONCRETE);
+    teamFactory.addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION,
+        LocationUtils.TEAM_RED_SPAWN, LocationUtils.TEAM_RED_FLAG, Material.RED_CONCRETE);
   }
 
   @Override
   public void setupFiles() throws FileException {
-    locations = getConfigFile(YamlFile.class, "locations.yml");
-    locations.createConfig();
-    locations.save();
+    locationsFile = getConfigFile(YamlFile.class, "locations.yml");
+    locationsFile.createConfig();
+    locationsFile.save();
+    configFile = getConfigFile(YamlFile.class, "config.yml");
+    configFile.createConfig();
+    configFile.save();
+    debugMode = configFile.getConfig().getBoolean("DebugMode");
   }
 
-  public YamlFile getLocations() {
-    return locations;
+  public YamlFile getLocationsFile() {
+    return locationsFile;
   }
 
   public PhaseFactory getPhaseFactory() {
     return phaseFactory;
   }
 
-  public void setPhaseFactory(PhaseFactory phaseFactory) {
-    this.phaseFactory = phaseFactory;
-  }
-
   public TeamFactory getTeamFactory() {
     return teamFactory;
-  }
-
-  public void setTeamFactory(TeamFactory teamFactory) {
-    this.teamFactory = teamFactory;
   }
 
   public Game getGame() {
@@ -94,5 +90,13 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
   public void setGame(Game game) {
     this.game = game;
+  }
+
+  public boolean isDebugMode() {
+    return debugMode;
+  }
+
+  public void setDebugMode(boolean debugMode) {
+    this.debugMode = debugMode;
   }
 }
