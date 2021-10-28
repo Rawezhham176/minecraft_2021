@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -55,6 +56,11 @@ public class LobbyListener extends AbstractGameListener {
         player.sendMessage("§bDu bist jetzt im Team §4ROT");
       }
     }
+  }
+
+  @EventHandler
+  public void onExp(PlayerExpChangeEvent e) {
+    e.setAmount(0);
   }
 
 }

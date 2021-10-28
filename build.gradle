@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'de.otto'
-version = '1.0.2-SNAPSHOT'
+version = '1.0.3-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -41,12 +41,12 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Jar) {
-    destinationDir = file("$rootDir/libs")
+    destinationDirectory = file("$rootDir/libs")
 }
 
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
+        options.release.set(targetJavaVersion)
     }
 }
 

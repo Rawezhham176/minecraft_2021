@@ -7,11 +7,14 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class InGameListener extends AbstractGameListener {
 
@@ -21,7 +24,8 @@ public class InGameListener extends AbstractGameListener {
 
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
-    e.disallow(Result.KICK_WHITELIST, MiniMessage.get().parse("<rainbow>Das Spiel läuft bereits</rainbow>"));
+    e.disallow(Result.KICK_WHITELIST,
+        MiniMessage.get().parse("<rainbow>Das Spiel läuft bereits</rainbow>"));
   }
 
   @EventHandler
@@ -36,15 +40,37 @@ public class InGameListener extends AbstractGameListener {
   public void onDeath(PlayerDeathEvent e) {
     e.setDroppedExp(0);
     e.getDrops().clear();
+    getPlugin().getTeamFactory().getTeams().forEach(team -> {
+      ItemStack helmet = e.getEntity().getInventory().getHelmet();
+
+      if (helmet != null && helmet.equals(team.getTeamBlockStack())) {
+        e.getDrops().add(team.getTeamBlockStack());
+      }
+    });
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGH)
   public void takeFlag(BlockBreakEvent e) {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (e.getBlock().getLocation().equals(team.getTeamFlag())) {
         team.takeFlag(e.getPlayer());
-        Bukkit.getServer().sendMessage(MiniMessage.get().parse("<aqua>" + e.getPlayer().getName() + " <yellow> hat die Flagge von Team " + team.getColor().name() + "<yellow> an sich gerissen."));
+        Bukkit.getServer().sendMessage(MiniMessage.get().parse(
+            "<aqua>"
+                + e.getPlayer().getName()
+                + "<yellow> hat die Flagge von Team "
+                + team.getColor().getChatColor()
+                + team.getColor().name() + "<yellow> an sich gerissen."));
+        e.setCancelled(false);
       }
     });
+  }
+
+  @EventHandler
+  public void onDamage(EntityDamageByEntityEvent e) {
+    if (e.getEntity() instanceof Player taker && e.getDamager() instanceof Player damager) {
+      if (getPlugin().getTeamFactory().getTeamByPlayer(damager).containsPlayer(taker)) {
+        e.setCancelled(true);
+      }
+    }
   }
 }

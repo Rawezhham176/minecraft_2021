@@ -5,10 +5,13 @@ import de.otto.capturetheflag.utils.Starterkit;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class Team {
 
@@ -21,7 +24,8 @@ public class Team {
   private final List<Player> players;
   private int score;
 
-  public Team(CaptureTheFlag plugin, TeamColor color, Location teamSelection, Location teamSpawn, Location teamFlag, Material teamBlock) {
+  public Team(CaptureTheFlag plugin, TeamColor color, Location teamSelection, Location teamSpawn,
+      Location teamFlag, Material teamBlock) {
     this.plugin = plugin;
     this.color = color;
     this.teamSelection = teamSelection;
@@ -76,8 +80,17 @@ public class Team {
     return teamBlock;
   }
 
+  public ItemStack getTeamBlockStack() {
+    ItemStack itemStack = new ItemStack(getTeamBlock(), 1);
+    ItemMeta itemMeta = itemStack.getItemMeta();
+    itemMeta.displayName(
+        MiniMessage.get().parse(getColor().getChatColor() + getColor().name() + " Flag"));
+    itemStack.setItemMeta(itemMeta);
+    return itemStack;
+  }
+
   public void takeFlag(Player player) {
-    player.getInventory().setHelmet(new ItemStack(getTeamBlock(), 1));
+    player.getInventory().setHelmet(getTeamBlockStack());
   }
 
   public int getScore() {
@@ -94,7 +107,15 @@ public class Team {
   }
 
   public void equipAllPlayers() {
-    players.forEach(player -> Starterkit.setItems(player));
+    players.forEach(player -> {
+      player.getInventory().clear();
+      player.setGameMode(GameMode.SURVIVAL);
+      player.setExp(0);
+      player.setLevel(0);
+      player.setHealth(20);
+      player.setFoodLevel(20);
+      Starterkit.setItems(player);
+    });
   }
 
 }

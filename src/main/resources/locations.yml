@@ -22,8 +22,8 @@ Locations:
         Pitch: 0
       Flag:
         X: -292
-        Y: 63
-        Z: 13
+        Y: 67
+        Z: 23
         World: world
     Red:
       Selection:
@@ -40,6 +40,6 @@ Locations:
         Pitch: 0
       Flag:
         X: -292
-        Y: 63
-        Z: 23
+        Y: 67
+        Z: 13
         World: world
