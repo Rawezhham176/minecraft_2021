@@ -15,9 +15,7 @@ import me.eyetealer.basicconstructplugin.files.YamlFile;
 /*
 
 TODO:
-  Starterkit in Utilsklasse zusammenstellen.
-  Beim Tod Items nicht droppen, Flagge muss droppen.
-  Beim Respawn zum Teamspawn teleportieren.
+  Beim Tod Flagge droppen.
   Im Bereich der Flagge soll Timer gestartet werden:
     Wenn Spieler lang genug im Bereich ist, erhält er die Flagge auf dem Kopf.
   Wenn Spieler Flagge auf eigenen Flaggenbereich bringt, soll das Team einen Punkt erhalten und es
