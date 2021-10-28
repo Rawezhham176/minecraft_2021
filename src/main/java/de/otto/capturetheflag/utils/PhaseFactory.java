@@ -31,11 +31,6 @@ public class PhaseFactory {
         .forEach(phaseListener -> phaseListener.registerListener(start));
   }
 
-  public Phase getPhaseByName(PhaseName phaseName) {
-    return getPhases().stream().filter(phase -> phase.getPhaseName() == phaseName).findFirst()
-        .orElseThrow();
-  }
-
   public Phase getByName(PhaseName phaseName) {
     return phases.stream().filter(phase -> phase.getPhaseName() == phaseName).findFirst()
         .orElseThrow();
