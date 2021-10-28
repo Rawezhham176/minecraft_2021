@@ -1,5 +1,6 @@
 package de.otto.capturetheflag;
 
+import de.otto.capturetheflag.commands.DebugCommand;
 import de.otto.capturetheflag.commands.StartCommand;
 import de.otto.capturetheflag.game.Game;
 import de.otto.capturetheflag.game.PhaseName;
@@ -9,6 +10,7 @@ import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.Objects;
 import me.eyetealer.basicconstructplugin.BasicConstructPlugin;
+import me.eyetealer.basicconstructplugin.exceptions.CannotSaveFileException;
 import me.eyetealer.basicconstructplugin.exceptions.FileException;
 import me.eyetealer.basicconstructplugin.files.YamlFile;
 import org.bukkit.Material;
@@ -51,8 +53,17 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     phaseFactory.setPhase(PhaseName.LOBBY, true);
 
     Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
+    Objects.requireNonNull(getCommand("debug")).setExecutor(new DebugCommand(this));
   }
 
+  public void onStop() {
+    try {
+      configFile.getConfig().set("DebugMode", debugMode);
+      configFile.save();
+    } catch (CannotSaveFileException e) {
+      e.printStackTrace();
+    }
+  }
 
   private void registerTeams() {
     teamFactory.addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION,
@@ -74,6 +85,10 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
   public YamlFile getLocationsFile() {
     return locationsFile;
+  }
+
+  public YamlFile getConfigFile() {
+    return configFile;
   }
 
   public PhaseFactory getPhaseFactory() {

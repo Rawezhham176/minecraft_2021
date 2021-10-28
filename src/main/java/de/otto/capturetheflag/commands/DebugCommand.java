@@ -1,6 +1,7 @@
 package de.otto.capturetheflag.commands;
 
 import de.otto.capturetheflag.CaptureTheFlag;
+import me.eyetealer.basicconstructplugin.exceptions.CannotSaveFileException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,9 +23,17 @@ public class DebugCommand implements CommandExecutor {
       @NotNull String label, @NotNull String[] args) {
     if (sender instanceof ConsoleCommandSender || (sender instanceof Player && sender.isOp())) {
 
-      boolean newState = !getPlugin().isDebugMode();
-      getPlugin().setDebugMode(newState);
-      sender.sendMessage(MiniMessage.get().parse("<gold>DebugMode wurde " + (newState ? "<green>eingeschaltet" : "<red>ausgeschaltet") + "<gold>."));
+      boolean debugState = getPlugin().isDebugMode();
+      if (args.length == 1 && args[0].equalsIgnoreCase("change")) {
+        getPlugin().setDebugMode(!debugState);
+        sender.sendMessage(MiniMessage.get().parse(
+            "<gold>DebugMode wurde " + (!debugState ? "<green>eingeschaltet" : "<red>ausgeschaltet")
+                + "<gold>."));
+      } else {
+        sender.sendMessage(MiniMessage.get().parse(
+            "<gold>Der DebugModus ist " + (debugState ? "<green>eingeschaltet"
+                : "<red>ausgeschaltet") + "<gold>."));
+      }
 
     }
 

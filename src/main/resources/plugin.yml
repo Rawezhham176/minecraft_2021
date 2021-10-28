@@ -5,3 +5,5 @@ api-version: 1.17
 commands:
   start:
     description: Starts the game
+  debug:
+    description: Shows and changes the debug mode
