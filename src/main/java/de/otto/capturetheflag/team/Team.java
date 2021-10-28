@@ -6,6 +6,7 @@ import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,9 +40,9 @@ public class Team {
     getPlayers().forEach(player -> player.teleport(getTeamSpawn()));
   }
 
-  public void teleportPlayerToTeamSpawn(Player player) {
-    player.teleport(getTeamSpawn());
-  }
+//  public void teleportPlayerToTeamSpawn(Player player) {
+//    player.teleport(getTeamSpawn());
+//  }
 
   public void addPlayer(Player player) {
     getPlayers().add(player);
@@ -91,6 +92,13 @@ public class Team {
 
   public void takeFlag(Player player) {
     player.getInventory().setHelmet(getTeamBlockStack());
+
+    Bukkit.getServer().sendMessage(MiniMessage.get().parse(
+        getColor().getChatColor()
+            + player.getName()
+            + "<yellow> hat die Flagge von Team "
+            + getColor().getChatColor()
+            + getColor().name() + "<yellow> an sich gerissen."));
   }
 
   public int getScore() {

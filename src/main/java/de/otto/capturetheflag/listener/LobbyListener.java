@@ -1,10 +1,7 @@
 package de.otto.capturetheflag.listener;
 
 import de.otto.capturetheflag.CaptureTheFlag;
-import de.otto.capturetheflag.team.Team;
 import de.otto.capturetheflag.utils.LocationUtils;
-import de.otto.capturetheflag.utils.TeamColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -39,23 +36,18 @@ public class LobbyListener extends AbstractGameListener {
   @EventHandler
   public void onMove(PlayerMoveEvent e) {
     Player player = e.getPlayer();
-    Location teamSelectionBlue = LocationUtils.TEAM_BLUE_SELECTION;
-    Location teamSelectionRed = LocationUtils.TEAM_RED_SELECTION;
-    Team teamBlue = getPlugin().getTeamFactory().getTeamByColor(TeamColor.BLUE);
-    Team teamRed = getPlugin().getTeamFactory().getTeamByColor(TeamColor.RED);
-    if (LocationUtils.isPlayerInLocationRange(player, teamSelectionBlue, 3)) {
-      if (!teamBlue.containsPlayer(player)) {
-        teamBlue.addPlayer(player);
-        teamRed.removePlayer(player);
-        player.sendMessage("§bDu bist jetzt im Team §1BLAU");
+
+    getPlugin().getTeamFactory().getTeams().forEach(team -> {
+      if (LocationUtils.isPlayerInLocationRange(player, team.getTeamSelection(), 3)) {
+        if (!team.containsPlayer(player)) {
+          team.addPlayer(player);
+          getPlugin().getTeamFactory().otherTeams(team)
+              .forEach(other -> other.removePlayer(player));
+          player.sendMessage(
+              "§bDu bist jetzt im Team " + team.getColor().getChatColor() + team.getColor());
+        }
       }
-    } else if (LocationUtils.isPlayerInLocationRange(player, teamSelectionRed, 3)) {
-      if (!teamRed.containsPlayer(player)) {
-        teamRed.addPlayer(player);
-        teamBlue.removePlayer(player);
-        player.sendMessage("§bDu bist jetzt im Team §4ROT");
-      }
-    }
+    });
   }
 
   @EventHandler

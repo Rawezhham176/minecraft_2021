@@ -32,4 +32,10 @@ public class TeamFactory {
   public Team getTeamByPlayer(Player player) {
     return getTeams().stream().filter(team -> team.containsPlayer(player)).findFirst().orElseThrow();
   }
+
+  public List<Team> otherTeams(Team team) {
+    List<Team> teams = new ArrayList<>(getTeams());
+    teams.remove(team);
+    return teams;
+  }
 }

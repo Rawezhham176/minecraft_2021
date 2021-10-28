@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -49,17 +50,20 @@ public class InGameListener extends AbstractGameListener {
     });
   }
 
+  @EventHandler
+  public void onPickUp(PlayerAttemptPickupItemEvent e) {
+    getPlugin().getTeamFactory().getTeams().forEach(team -> {
+      if (team.getTeamBlockStack().equals(e.getItem().getItemStack())) {
+        team.takeFlag(e.getPlayer());
+      }
+    });
+  }
+
   @EventHandler(priority = EventPriority.HIGH)
   public void takeFlag(BlockBreakEvent e) {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (e.getBlock().getLocation().equals(team.getTeamFlag())) {
         team.takeFlag(e.getPlayer());
-        Bukkit.getServer().sendMessage(MiniMessage.get().parse(
-            "<aqua>"
-                + e.getPlayer().getName()
-                + "<yellow> hat die Flagge von Team "
-                + team.getColor().getChatColor()
-                + team.getColor().name() + "<yellow> an sich gerissen."));
         e.setCancelled(false);
       }
     });
