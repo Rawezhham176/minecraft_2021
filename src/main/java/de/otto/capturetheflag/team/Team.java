@@ -1,6 +1,7 @@
 package de.otto.capturetheflag.team;
 
 import de.otto.capturetheflag.CaptureTheFlag;
+import de.otto.capturetheflag.utils.Starterkit;
 import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,5 +73,8 @@ public class Team {
   public void addScore() {
     this.score += 1;
     plugin.getGame().checkScore(this);
+  }
+  public void equipAllPlayers() {
+    players.forEach(player -> Starterkit.setItems(player));
   }
 }

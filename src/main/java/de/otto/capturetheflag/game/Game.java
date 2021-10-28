@@ -25,7 +25,10 @@ public class Game {
     setActive(true);
     getPlugin().getPhaseFactory().setPhase(PhaseName.LOBBY, false);
     getPlugin().getPhaseFactory().setPhase(PhaseName.INGAME, true);
-    getPlugin().getTeamFactory().getTeams().forEach(Team::teleportAllPlayersToTeamSpawn);
+    getPlugin().getTeamFactory().getTeams().forEach(team -> {
+      team.equipAllPlayers();
+      team.teleportAllPlayersToTeamSpawn();
+    });
   }
 
   public void checkScore(Team team) {

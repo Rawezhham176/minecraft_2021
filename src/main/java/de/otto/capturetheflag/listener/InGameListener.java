@@ -1,10 +1,12 @@
 package de.otto.capturetheflag.listener;
 
 import de.otto.capturetheflag.CaptureTheFlag;
+import de.otto.capturetheflag.utils.Starterkit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class InGameListener extends AbstractGameListener {
 
@@ -14,9 +16,11 @@ public class InGameListener extends AbstractGameListener {
 
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
-    if (getPlugin().getGame().isActive()) {
-      e.disallow(Result.KICK_WHITELIST,
-          MiniMessage.get().parse("<rainbow>Das Spiel läuft bereits</rainbow>"));
-    }
+    e.disallow(Result.KICK_WHITELIST, MiniMessage.get().parse("<rainbow>Das Spiel läuft bereits</rainbow>"));
+  }
+
+  @EventHandler
+  public void onRespawn(PlayerRespawnEvent e) {
+    Starterkit.setItems(e.getPlayer());
   }
 }
