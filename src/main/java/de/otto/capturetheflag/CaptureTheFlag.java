@@ -4,13 +4,15 @@ import de.otto.capturetheflag.commands.StartCommand;
 import de.otto.capturetheflag.game.Game;
 import de.otto.capturetheflag.game.PhaseName;
 import de.otto.capturetheflag.team.TeamFactory;
-import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.LocationUtils;
+import de.otto.capturetheflag.utils.PhaseFactory;
 import de.otto.capturetheflag.utils.TeamColor;
-import java.util.Objects;
 import me.eyetealer.basicconstructplugin.BasicConstructPlugin;
 import me.eyetealer.basicconstructplugin.exceptions.FileException;
 import me.eyetealer.basicconstructplugin.files.YamlFile;
+import org.bukkit.Material;
+
+import java.util.Objects;
 
 /*
 
@@ -26,71 +28,70 @@ TODO:
 
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
-  private static CaptureTheFlag instance;
-  private YamlFile locations;
-  private TeamFactory teamFactory;
-  private PhaseFactory phaseFactory;
+    private static CaptureTheFlag instance;
+    private YamlFile locations;
+    private TeamFactory teamFactory;
+    private PhaseFactory phaseFactory;
 
-  private Game game;
+    private Game game;
 
-  public static CaptureTheFlag getInstance() {
-    return instance;
-  }
+    public static CaptureTheFlag getInstance() {
+        return instance;
+    }
 
-  public void onStart() {
-    instance = this;
+    public void onStart() {
+        instance = this;
 
-    setTeamFactory(new TeamFactory(this));
-    setPhaseFactory(new PhaseFactory(this));
+        setTeamFactory(new TeamFactory(this));
+        setPhaseFactory(new PhaseFactory(this));
 
-    registerTeams();
+        registerTeams();
 
-    getPhaseFactory().setPhase(PhaseName.LOBBY, true);
+        getPhaseFactory().setPhase(PhaseName.LOBBY, true);
 
-    Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
-  }
+        Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand(this));
+    }
 
 
+    private void registerTeams() {
+        getTeamFactory()
+                .addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION, LocationUtils.TEAM_BLUE_SPAWN, LocationUtils.TEAM_BLUE_FLAG, Material.BLUE_CONCRETE);
+        getTeamFactory()
+                .addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION, LocationUtils.TEAM_RED_SPAWN, LocationUtils.TEAM_RED_FLAG, Material.RED_CONCRETE);
+    }
 
-  private void registerTeams() {
-    getTeamFactory()
-        .addTeam(TeamColor.BLUE, LocationUtils.TEAM_BLUE_SELECTION, LocationUtils.TEAM_BLUE_SPAWN);
-    getTeamFactory()
-        .addTeam(TeamColor.RED, LocationUtils.TEAM_RED_SELECTION, LocationUtils.TEAM_RED_SPAWN);
-  }
+    @Override
+    public void setupFiles() throws FileException {
+        locations = getConfigFile(YamlFile.class, "locations.yml");
+        locations.createConfig();
+        locations.save();
+    }
 
-  @Override
-  public void setupFiles() throws FileException {
-    locations = getConfigFile(YamlFile.class, "locations.yml");
-    locations.createConfig();
-    locations.save();
-  }
+    public YamlFile getLocations() {
+        return locations;
+    }
 
-  public YamlFile getLocations() {
-    return locations;
-  }
+    public PhaseFactory getPhaseFactory() {
+        return phaseFactory;
+    }
 
-  public void setTeamFactory(TeamFactory teamFactory) {
-    this.teamFactory = teamFactory;
-  }
+    public void setPhaseFactory(PhaseFactory phaseFactory) {
+        this.phaseFactory = phaseFactory;
+    }
 
-  public void setPhaseFactory(PhaseFactory phaseFactory) {
-    this.phaseFactory = phaseFactory;
-  }
+    public TeamFactory getTeamFactory() {
+        return teamFactory;
+    }
 
-  public PhaseFactory getPhaseFactory() {
-    return phaseFactory;
-  }
+    public void setTeamFactory(TeamFactory teamFactory) {
+        this.teamFactory = teamFactory;
+    }
 
-  public TeamFactory getTeamFactory() {
-    return teamFactory;
-  }
+    public Game getGame() {
+        return game;
+    }
 
-  public Game getGame() {
-    return game;
-  }
-
-  public void setGame(Game game) {
-    this.game = game;
-  }
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

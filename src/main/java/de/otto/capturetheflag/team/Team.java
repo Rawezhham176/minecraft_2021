@@ -6,7 +6,9 @@ import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class Team {
 
@@ -14,14 +16,18 @@ public class Team {
   private final TeamColor color;
   private final Location teamSelection;
   private final Location teamSpawn;
+  private final Location teamFlag;
+  private final Material teamBlock;
   private final List<Player> players;
   private int score;
 
-  public Team(CaptureTheFlag plugin, TeamColor color, Location teamSelection, Location teamSpawn) {
+  public Team(CaptureTheFlag plugin, TeamColor color, Location teamSelection, Location teamSpawn, Location teamFlag, Material teamBlock) {
     this.plugin = plugin;
     this.color = color;
     this.teamSelection = teamSelection;
     this.teamSpawn = teamSpawn;
+    this.teamFlag = teamFlag;
+    this.teamBlock = teamBlock;
     this.players = new ArrayList<>();
   }
 
@@ -62,6 +68,18 @@ public class Team {
     return teamSpawn;
   }
 
+  public Location getTeamFlag() {
+    return teamFlag;
+  }
+
+  public Material getTeamBlock() {
+    return teamBlock;
+  }
+
+  public void takeFlag(Player player) {
+    player.getInventory().setHelmet(new ItemStack(getTeamBlock(), 1));
+  }
+
   public int getScore() {
     return score;
   }
@@ -74,7 +92,9 @@ public class Team {
     this.score += 1;
     plugin.getGame().checkScore(this);
   }
+
   public void equipAllPlayers() {
     players.forEach(player -> Starterkit.setItems(player));
   }
+
 }

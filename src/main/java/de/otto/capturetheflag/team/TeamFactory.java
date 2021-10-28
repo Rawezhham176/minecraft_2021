@@ -5,6 +5,7 @@ import de.otto.capturetheflag.utils.TeamColor;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class TeamFactory {
@@ -16,8 +17,8 @@ public class TeamFactory {
     this.plugin = plugin;
   }
 
-  public void addTeam(TeamColor color, Location teamSelection, Location teamSpawn) {
-    teams.add(new Team(plugin, color, teamSelection, teamSpawn));
+  public void addTeam(TeamColor color, Location teamSelection, Location teamSpawn, Location teamFlag, Material teamBlock) {
+    teams.add(new Team(plugin, color, teamSelection, teamSpawn, teamFlag, teamBlock));
   }
 
   public Team getTeamByColor(TeamColor color) {
