@@ -1,13 +1,16 @@
 package de.otto.capturetheflag.team;
 
 import de.otto.capturetheflag.CaptureTheFlag;
-import de.otto.capturetheflag.utils.Utils;
+import de.otto.capturetheflag.utils.LocationUtils;
 import de.otto.capturetheflag.utils.TeamColor;
-import java.util.ArrayList;
+import de.otto.capturetheflag.utils.Utils;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.apache.logging.log4j.util.SystemPropertiesPropertySource;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,9 +24,10 @@ public class Team {
   private final Location teamSelection;
   private final Location teamSpawn;
   private final Location teamFlag;
+  private final Location teamFlagRange;
   private final Material teamBlock;
-  private final List<Player> players;
   private int score;
+  private int task;
 
   public Team(CaptureTheFlag plugin, TeamColor color, Location teamSelection, Location teamSpawn,
       Location teamFlag, Material teamBlock) {
@@ -32,8 +36,8 @@ public class Team {
     this.teamSelection = teamSelection;
     this.teamSpawn = teamSpawn;
     this.teamFlag = teamFlag;
+    this.teamFlagRange = teamFlag.clone().add(0, -4, 0);
     this.teamBlock = teamBlock;
-    this.players = new ArrayList<>();
   }
 
   public void teleportAllPlayersToTeamSpawn() {
@@ -43,14 +47,6 @@ public class Team {
 //  public void teleportPlayerToTeamSpawn(Player player) {
 //    player.teleport(getTeamSpawn());
 //  }
-
-  public void addPlayer(Player player) {
-    getPlayers().add(player);
-  }
-
-  public void removePlayer(Player player) {
-    getPlayers().remove(player);
-  }
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean containsPlayer(Player player) {
@@ -62,7 +58,10 @@ public class Team {
   }
 
   public List<Player> getPlayers() {
-    return players;
+    return plugin.getTeamFactory().getTeamPlayers().stream()
+        .filter(teamPlayer -> teamPlayer.getPlayerTeam() == this).map(TeamPlayer::getPlayer)
+        .collect(
+            Collectors.toList());
   }
 
   public Location getTeamSelection() {
@@ -75,6 +74,10 @@ public class Team {
 
   public Location getTeamFlag() {
     return teamFlag;
+  }
+
+  public Location getTeamFlagRange() {
+    return teamFlagRange;
   }
 
   public Material getTeamBlock() {
@@ -90,32 +93,89 @@ public class Team {
     return itemStack;
   }
 
-  public void takeFlag(Player player) {
-    player.getInventory().setHelmet(getTeamBlockStack());
+  public void takeFlag(TeamPlayer player) {
+    player.getPlayer().getInventory().setHelmet(getTeamBlockStack());
 
     Bukkit.getServer().sendMessage(MiniMessage.get().parse(
-        getColor().getChatColor()
-            + player.getName()
+        player.getPlayerTeam().getColor().getChatColor()
+            + player.getPlayer().getName()
             + "<yellow> hat die Flagge von Team "
             + getColor().getChatColor()
             + getColor().name() + "<yellow> an sich gerissen."));
+  }
+
+  public void startCheckFlag() {
+    task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+      Optional<TeamPlayer> playerByTeamFlag = plugin.getFlagCarrierFactory()
+          .getPlayerByTeamFlag(this);
+      if (playerByTeamFlag.isPresent()) {
+        TeamPlayer teamPlayer = playerByTeamFlag.get();
+        if (LocationUtils.isPlayerInLocationRange(teamPlayer.getPlayer(), this.getTeamFlagRange(),
+            3)) {
+          if (teamPlayer.getPlayerTeam() == this) {
+            returnFlag(teamPlayer.getPlayer());
+            respawnFlag();
+          }
+        }
+      }
+
+      plugin.getFlagCarrierFactory()
+          .getTeamMembersWithEnemyTeamFlag(this).forEach(teamPlayerEntry -> {
+        TeamPlayer teamPlayer = teamPlayerEntry.getValue();
+        if (LocationUtils.isPlayerInLocationRange(teamPlayer.getPlayer(), this.getTeamFlagRange(),
+            3)) {
+          Team team = teamPlayerEntry.getKey();
+          if (teamPlayer.getPlayerTeam() == this) {
+            addScore(teamPlayerEntry);
+            team.respawnFlag();
+          }
+        }
+      });
+
+    }, 1, 1);
   }
 
   public int getScore() {
     return score;
   }
 
-  public void setScore(int score) {
-    this.score = score;
+  public void respawnFlag() {
+    getTeamFlag().getBlock().setType(getTeamBlock());
   }
 
-  public void addScore() {
+  public void shutdown() {
+    Bukkit.getScheduler().cancelTask(task);
+  }
+
+  public void addScore(Entry<Team, TeamPlayer> teamPlayerEntry) {
+    Player player = teamPlayerEntry.getValue().getPlayer();
+    Team team = teamPlayerEntry.getKey();
+    Utils.setHelmet(player);
+    plugin.getFlagCarrierFactory().removeFlag(team);
     this.score += 1;
+    Bukkit.getServer().sendMessage(MiniMessage.get().parse(
+        getColor().getChatColor()
+            + player.getName()
+            + "<yellow> hat einen Punkt für Team "
+            + getColor().getChatColor()
+            + getColor().name() + "<yellow> gemacht."));
     plugin.getGame().checkScore(this);
   }
 
+  private void returnFlag(Player player) {
+    Utils.setHelmet(player);
+    plugin.getFlagCarrierFactory().removeFlag(plugin.getTeamFactory().getTeamByPlayer(player));
+    Bukkit.getServer().sendMessage(MiniMessage.get().parse(
+        getColor().getChatColor()
+            + player.getName()
+            + "<yellow> die Flagge von Team "
+            + getColor().getChatColor()
+            + getColor().name() + "<yellow> zurückgebracht."));
+
+  }
+
   public void equipAllPlayers() {
-    players.forEach(player -> {
+    getPlayers().forEach(player -> {
       Utils.resetPlayer(player);
       Utils.setItems(player);
     });

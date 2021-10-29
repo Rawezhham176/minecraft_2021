@@ -2,6 +2,7 @@ package de.otto.capturetheflag;
 
 import de.otto.capturetheflag.commands.DebugCommand;
 import de.otto.capturetheflag.commands.StartCommand;
+import de.otto.capturetheflag.flagcarrier.FlagCarrierFactory;
 import de.otto.capturetheflag.game.Game;
 import de.otto.capturetheflag.game.PhaseName;
 import de.otto.capturetheflag.team.TeamFactory;
@@ -15,17 +16,6 @@ import me.eyetealer.basicconstructplugin.exceptions.FileException;
 import me.eyetealer.basicconstructplugin.files.YamlFile;
 import org.bukkit.Material;
 
-/*
-
-TODO:
-  Im Bereich der Flagge soll Timer gestartet werden:
-    Wenn Spieler lang genug im Bereich ist, erhält er die Flagge auf dem Kopf.
-  Wenn Spieler Flagge auf eigenen Flaggenbereich bringt, soll das Team einen Punkt erhalten und es
-  soll überprüft werden, ob das Team jetzt 3 Punkte zum Sieg besitzt.
-  Siegmechanik muss eingebaut werden.
-
- */
-
 public final class CaptureTheFlag extends BasicConstructPlugin {
 
   private static CaptureTheFlag instance;
@@ -33,6 +23,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   private YamlFile configFile;
   private TeamFactory teamFactory;
   private PhaseFactory phaseFactory;
+  private FlagCarrierFactory flagCarrierFactory;
 
   private boolean debugMode;
 
@@ -47,6 +38,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
     teamFactory = new TeamFactory(this);
     phaseFactory = new PhaseFactory(this);
+    flagCarrierFactory = new FlagCarrierFactory(this);
 
     registerTeams();
 
@@ -87,16 +79,16 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     return locationsFile;
   }
 
-  public YamlFile getConfigFile() {
-    return configFile;
-  }
-
   public PhaseFactory getPhaseFactory() {
     return phaseFactory;
   }
 
   public TeamFactory getTeamFactory() {
     return teamFactory;
+  }
+
+  public FlagCarrierFactory getFlagCarrierFactory() {
+    return flagCarrierFactory;
   }
 
   public Game getGame() {

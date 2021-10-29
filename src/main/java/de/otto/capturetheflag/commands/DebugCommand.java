@@ -1,7 +1,6 @@
 package de.otto.capturetheflag.commands;
 
 import de.otto.capturetheflag.CaptureTheFlag;
-import me.eyetealer.basicconstructplugin.exceptions.CannotSaveFileException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -28,4 +28,8 @@ public class Utils {
     player.setHealth(20);
     player.setFoodLevel(20);
   }
+
+  public static void setHelmet(Player player) {
+    player.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET, 1));
+  }
 }

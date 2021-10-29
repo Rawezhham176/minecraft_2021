@@ -39,12 +39,10 @@ public class LobbyListener extends AbstractGameListener {
   public void onMove(PlayerMoveEvent e) {
     Player player = e.getPlayer();
 
+
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (LocationUtils.isPlayerInLocationRange(player, team.getTeamSelection(), 3)) {
-        if (!team.containsPlayer(player)) {
-          team.addPlayer(player);
-          getPlugin().getTeamFactory().otherTeams(team)
-              .forEach(other -> other.removePlayer(player));
+        if(getPlugin().getTeamFactory().addPlayerToTeam(player, team)) {
           player.sendMessage(
               "§bDu bist jetzt im Team " + team.getColor().getChatColor() + team.getColor());
         }

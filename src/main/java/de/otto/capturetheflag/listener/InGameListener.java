@@ -2,7 +2,9 @@ package de.otto.capturetheflag.listener;
 
 import de.otto.capturetheflag.CaptureTheFlag;
 import de.otto.capturetheflag.team.Team;
+import de.otto.capturetheflag.team.TeamPlayer;
 import de.otto.capturetheflag.utils.Utils;
+import java.util.Optional;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +16,6 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class InGameListener extends AbstractGameListener {
 
@@ -40,19 +41,24 @@ public class InGameListener extends AbstractGameListener {
   public void onDeath(PlayerDeathEvent e) {
     e.setDroppedExp(0);
     e.getDrops().clear();
-    getPlugin().getTeamFactory().getTeams().forEach(team -> {
-      ItemStack helmet = e.getEntity().getInventory().getHelmet();
-      if (helmet != null && helmet.equals(team.getTeamBlockStack())) {
-        e.getDrops().add(team.getTeamBlockStack());
-      }
-    });
+    TeamPlayer player = getPlugin().getTeamFactory().getTeamPlayerByPlayer(e.getEntity());
+    Optional<Team> teamFlag = getPlugin().getFlagCarrierFactory().getTeamFlagCarriedByTeamPlayer(player);
+    if (teamFlag.isPresent()) {
+      Team team = teamFlag.get();
+      e.getDrops().add(team.getTeamBlockStack());
+      getPlugin().getFlagCarrierFactory().removeFlag(team);
+    }
   }
 
   @EventHandler
   public void onPickUp(PlayerAttemptPickupItemEvent e) {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (team.getTeamBlockStack().equals(e.getItem().getItemStack())) {
-        team.takeFlag(e.getPlayer());
+        TeamPlayer teamPlayer = getPlugin().getTeamFactory()
+            .getTeamPlayerByPlayer(e.getPlayer());
+        team.takeFlag(teamPlayer);
+        getPlugin().getFlagCarrierFactory()
+            .takeFlag(team, teamPlayer);
       }
     });
   }
@@ -61,8 +67,14 @@ public class InGameListener extends AbstractGameListener {
   public void takeFlag(BlockBreakEvent e) {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (e.getBlock().getLocation().equals(team.getTeamFlag())) {
-        team.takeFlag(e.getPlayer());
-        e.setCancelled(false);
+        TeamPlayer teamPlayer = getPlugin().getTeamFactory()
+            .getTeamPlayerByPlayer(e.getPlayer());
+        if (team != teamPlayer.getPlayerTeam()) {
+          team.takeFlag(teamPlayer);
+          getPlugin().getFlagCarrierFactory()
+              .takeFlag(team, teamPlayer);
+          e.setCancelled(false);
+        }
       }
     });
   }
@@ -75,4 +87,5 @@ public class InGameListener extends AbstractGameListener {
       }
     }
   }
+
 }

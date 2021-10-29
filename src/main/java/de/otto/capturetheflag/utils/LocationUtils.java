@@ -43,7 +43,8 @@ public class LocationUtils {
     Location location = getLocation(locationName);
     String path = getLocationPath(locationName);
     float yaw = CaptureTheFlag.getInstance().getLocationsFile().getConfig().getLong(path + ".Yaw");
-    float pitch = CaptureTheFlag.getInstance().getLocationsFile().getConfig().getLong(path + ".Pitch");
+    float pitch = CaptureTheFlag.getInstance().getLocationsFile().getConfig()
+        .getLong(path + ".Pitch");
     location.setYaw(yaw);
     location.setPitch(pitch);
     return location;

@@ -34,6 +34,7 @@ public class Game {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       team.equipAllPlayers();
       team.teleportAllPlayersToTeamSpawn();
+      team.startCheckFlag();
     });
     Collection<Player> ingamePlayers = getPlugin().getTeamFactory().getTeams().stream()
         .map(Team::getPlayers).flatMap(Collection::stream).collect(Collectors.toList());
@@ -44,10 +45,34 @@ public class Game {
         MiniMessage.get().parse("<rainbow>Das Spiel startet jetzt</rainbow>")));
   }
 
-  public void checkScore(Team team) {
-    //noinspection StatementWithEmptyBody
-    if (team.getScore() == 3) {
+  public void winner(Team winner) {
+    setActive(false);
+    getPlugin().getPhaseFactory().setPhase(PhaseName.LOBBY, false);
+    getPlugin().getTeamFactory().getTeams().forEach(Team::shutdown);
+    Bukkit.getServer().sendMessage(MiniMessage.get().parse(
+        "<yellow> Team " + winner.getColor().getChatColor() + winner.getColor().name()
+            + "<yellow> hat das Spiel gewonnen."));
+  }
 
+  public void checkScore(Team scoredTeam) {
+
+    StringBuilder stringBuilder = new StringBuilder("<yellow>Neuer Punktestand: ");
+
+    int teamsCount = getPlugin().getTeamFactory().getTeams().size();
+    for (int i = 0; i < teamsCount; i++) {
+      Team team = getPlugin().getTeamFactory().getTeams().get(i);
+      stringBuilder.append(team.getColor().getChatColor());
+      stringBuilder.append(team.getColor().name());
+      stringBuilder.append("<yellow>: <gold>");
+      stringBuilder.append(team.getScore());
+      if (i != teamsCount - 1) {
+        stringBuilder.append("<yellow> - ");
+      }
+    }
+
+    Bukkit.getServer().sendMessage(MiniMessage.get().parse(stringBuilder.toString()));
+    if (scoredTeam.getScore() == 3) {
+      winner(scoredTeam);
     }
   }
 
