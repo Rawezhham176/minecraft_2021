@@ -2,7 +2,7 @@ package de.otto.capturetheflag;
 
 import de.otto.capturetheflag.commands.DebugCommand;
 import de.otto.capturetheflag.commands.StartCommand;
-import de.otto.capturetheflag.flagcarrier.FlagCarrierFactory;
+import de.otto.capturetheflag.flagcarrier.FlagCarrierManager;
 import de.otto.capturetheflag.game.Game;
 import de.otto.capturetheflag.game.PhaseName;
 import de.otto.capturetheflag.team.TeamFactory;
@@ -23,7 +23,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
   private YamlFile configFile;
   private TeamFactory teamFactory;
   private PhaseFactory phaseFactory;
-  private FlagCarrierFactory flagCarrierFactory;
+  private FlagCarrierManager flagCarrierFactory;
 
   private boolean debugMode;
 
@@ -38,7 +38,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
 
     teamFactory = new TeamFactory(this);
     phaseFactory = new PhaseFactory(this);
-    flagCarrierFactory = new FlagCarrierFactory(this);
+    flagCarrierFactory = new FlagCarrierManager(this);
 
     registerTeams();
 
@@ -87,7 +87,7 @@ public final class CaptureTheFlag extends BasicConstructPlugin {
     return teamFactory;
   }
 
-  public FlagCarrierFactory getFlagCarrierFactory() {
+  public FlagCarrierManager getFlagCarrierFactory() {
     return flagCarrierFactory;
   }
 

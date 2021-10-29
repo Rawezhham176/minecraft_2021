@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class GeneralListener extends AbstractGameListener {
@@ -30,6 +32,16 @@ public class GeneralListener extends AbstractGameListener {
   @EventHandler
   public void onExp(PlayerExpChangeEvent e) {
     e.setAmount(0);
+  }
+
+  @EventHandler
+  public void onDrop(PlayerDropItemEvent e) {
+    e.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPickUp(PlayerAttemptPickupItemEvent e) {
+    e.setCancelled(true);
   }
 
 }

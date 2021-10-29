@@ -9,19 +9,17 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FlagCarrierFactory {
+public class FlagCarrierManager {
 
   private final CaptureTheFlag plugin;
   private final HashMap<Team, TeamPlayer> carriedFlags = new HashMap<>();
 
-  public FlagCarrierFactory(CaptureTheFlag plugin) {
+  public FlagCarrierManager(CaptureTheFlag plugin) {
     this.plugin = plugin;
   }
 
   public void takeFlag(Team carriedFlag, TeamPlayer player) {
     carriedFlags.put(carriedFlag, player);
-//    flagCarriers.removeIf(flagCarrier -> flagCarrier.getFlagCarried() == flagCarried);
-//    flagCarriers.add(new FlagCarrier(player, flagCarried, ));
   }
 
   public void removeFlag(Team team) {
@@ -34,12 +32,18 @@ public class FlagCarrierFactory {
             Entry::getKey);
   }
 
+  public boolean isPlayerNotCarryingFlag(TeamPlayer thisPlayer) {
+    return carriedFlags.values().stream().noneMatch(player -> player == thisPlayer);
+  }
+
   public Optional<TeamPlayer> getPlayerByTeamFlag(Team team) {
     return Optional.ofNullable(carriedFlags.getOrDefault(team, null));
   }
 
   public List<Entry<Team, TeamPlayer>> getTeamMembersWithEnemyTeamFlag(Team team) {
-    return carriedFlags.entrySet().stream().filter(teamTeamPlayerEntry -> teamTeamPlayerEntry.getValue().getPlayerTeam() == team).collect(
-        Collectors.toList());
+    return carriedFlags.entrySet().stream()
+        .filter(teamTeamPlayerEntry -> teamTeamPlayerEntry.getValue().getPlayerTeam() == team)
+        .collect(
+            Collectors.toList());
   }
 }

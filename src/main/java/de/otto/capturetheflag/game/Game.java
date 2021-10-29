@@ -50,7 +50,7 @@ public class Game {
     getPlugin().getPhaseFactory().setPhase(PhaseName.LOBBY, false);
     getPlugin().getTeamFactory().getTeams().forEach(Team::shutdown);
     Bukkit.getServer().sendMessage(MiniMessage.get().parse(
-        "<yellow> Team " + winner.getColor().getChatColor() + winner.getColor().name()
+        "<yellow>Team " + winner.getColor().getChatColor() + winner.getColor().name()
             + "<yellow> hat das Spiel gewonnen."));
   }
 

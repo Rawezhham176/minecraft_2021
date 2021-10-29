@@ -8,7 +8,6 @@ import java.util.Optional;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -52,28 +51,33 @@ public class InGameListener extends AbstractGameListener {
 
   @EventHandler
   public void onPickUp(PlayerAttemptPickupItemEvent e) {
-    getPlugin().getTeamFactory().getTeams().forEach(team -> {
+    for (Team team : getPlugin().getTeamFactory().getTeams()) {
       if (team.getTeamBlockStack().equals(e.getItem().getItemStack())) {
         TeamPlayer teamPlayer = getPlugin().getTeamFactory()
             .getTeamPlayerByPlayer(e.getPlayer());
-        team.takeFlag(teamPlayer);
-        getPlugin().getFlagCarrierFactory()
-            .takeFlag(team, teamPlayer);
+        if (getPlugin().getFlagCarrierFactory().isPlayerNotCarryingFlag(teamPlayer)) {
+          team.takeFlag(teamPlayer);
+          getPlugin().getFlagCarrierFactory()
+              .takeFlag(team, teamPlayer);
+          e.getItem().remove();
+        }
       }
-    });
+    }
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler
   public void takeFlag(BlockBreakEvent e) {
     getPlugin().getTeamFactory().getTeams().forEach(team -> {
       if (e.getBlock().getLocation().equals(team.getTeamFlag())) {
         TeamPlayer teamPlayer = getPlugin().getTeamFactory()
             .getTeamPlayerByPlayer(e.getPlayer());
-        if (team != teamPlayer.getPlayerTeam()) {
-          team.takeFlag(teamPlayer);
-          getPlugin().getFlagCarrierFactory()
-              .takeFlag(team, teamPlayer);
-          e.setCancelled(false);
+        if (getPlugin().getFlagCarrierFactory().isPlayerNotCarryingFlag(teamPlayer)) {
+          if (team != teamPlayer.getPlayerTeam()) {
+            team.takeFlag(teamPlayer);
+            getPlugin().getFlagCarrierFactory()
+                .takeFlag(team, teamPlayer);
+            e.setCancelled(false);
+          }
         }
       }
     });
