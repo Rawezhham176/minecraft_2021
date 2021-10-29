@@ -41,7 +41,8 @@ public class InGameListener extends AbstractGameListener {
     e.setDroppedExp(0);
     e.getDrops().clear();
     TeamPlayer player = getPlugin().getTeamFactory().getTeamPlayerByPlayer(e.getEntity());
-    Optional<Team> teamFlag = getPlugin().getFlagCarrierFactory().getTeamFlagCarriedByTeamPlayer(player);
+    Optional<Team> teamFlag = getPlugin().getFlagCarrierFactory()
+        .getTeamFlagCarriedByTeamPlayer(player);
     if (teamFlag.isPresent()) {
       Team team = teamFlag.get();
       e.getDrops().add(team.getTeamBlockStack());
@@ -51,18 +52,18 @@ public class InGameListener extends AbstractGameListener {
 
   @EventHandler
   public void onPickUp(PlayerAttemptPickupItemEvent e) {
-    for (Team team : getPlugin().getTeamFactory().getTeams()) {
-      if (team.getTeamBlockStack().equals(e.getItem().getItemStack())) {
-        TeamPlayer teamPlayer = getPlugin().getTeamFactory()
-            .getTeamPlayerByPlayer(e.getPlayer());
-        if (getPlugin().getFlagCarrierFactory().isPlayerNotCarryingFlag(teamPlayer)) {
-          team.takeFlag(teamPlayer);
-          getPlugin().getFlagCarrierFactory()
-              .takeFlag(team, teamPlayer);
-          e.getItem().remove();
-        }
-      }
-    }
+    getPlugin().getTeamFactory().getTeams().stream()
+        .filter(team -> team.getTeamBlockStack().equals(e.getItem().getItemStack()))
+        .forEach(team -> {
+          TeamPlayer teamPlayer = getPlugin().getTeamFactory()
+              .getTeamPlayerByPlayer(e.getPlayer());
+          if (getPlugin().getFlagCarrierFactory().isPlayerNotCarryingFlag(teamPlayer)) {
+            team.takeFlag(teamPlayer);
+            getPlugin().getFlagCarrierFactory()
+                .takeFlag(team, teamPlayer);
+            e.getItem().remove();
+          }
+        });
   }
 
   @EventHandler
